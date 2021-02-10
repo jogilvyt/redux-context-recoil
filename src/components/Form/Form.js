@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
-const Form = ({ handleSubmit }) => {
+import { toDosAtom } from "../../recoil";
+import { addToDo } from "../../api";
+
+const Form = () => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [, setTodos] = useRecoilState(toDosAtom);
 
   const handleInputChange = e => {
     setInputValue(e.target.value);
@@ -11,7 +16,8 @@ const Form = ({ handleSubmit }) => {
   const onSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
-    await handleSubmit(inputValue);
+    const res = await addToDo(inputValue);
+    setTodos(res);
     setInputValue("");
     setIsLoading(false);
   };

@@ -1,8 +1,13 @@
 import { useState, useRef, useEffect } from "react";
+import { useRecoilState } from "recoil";
 
-const ToDoItem = ({ item, handleDelete }) => {
+import { toDosAtom } from "../../recoil";
+import { deleteToDo } from "../../api";
+
+const ToDoItem = ({ item }) => {
   const isMounted = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const [, setTodos] = useRecoilState(toDosAtom);
 
   useEffect(() => {
     isMounted.current = true;
@@ -14,7 +19,8 @@ const ToDoItem = ({ item, handleDelete }) => {
 
   const onDelete = async () => {
     setIsLoading(true);
-    await handleDelete(item.id);
+    const res = await deleteToDo(item.id);
+    setTodos(res);
     if (isMounted.current) {
       setIsLoading(false);
     }
