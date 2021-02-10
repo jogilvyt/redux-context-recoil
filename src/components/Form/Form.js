@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-const Form = ({ handleSubmit }) => {
+import useToDos from "../../context/useToDos";
+
+const Form = () => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const { addNewToDo } = useToDos();
 
   const handleInputChange = e => {
     setInputValue(e.target.value);
@@ -11,7 +15,7 @@ const Form = ({ handleSubmit }) => {
   const onSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
-    await handleSubmit(inputValue);
+    await addNewToDo(inputValue);
     setInputValue("");
     setIsLoading(false);
   };

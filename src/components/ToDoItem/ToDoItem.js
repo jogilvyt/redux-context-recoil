@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 
-const ToDoItem = ({ item, handleDelete }) => {
+import useToDos from "../../context/useToDos";
+
+const ToDoItem = ({ item }) => {
   const isMounted = useRef();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { removeToDo } = useToDos();
 
   useEffect(() => {
     isMounted.current = true;
@@ -14,7 +18,7 @@ const ToDoItem = ({ item, handleDelete }) => {
 
   const onDelete = async () => {
     setIsLoading(true);
-    await handleDelete(item.id);
+    await removeToDo(item.id);
     if (isMounted.current) {
       setIsLoading(false);
     }
