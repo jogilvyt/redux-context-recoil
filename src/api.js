@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-const todos = [
+let todos = [
   {
     id: uuid(),
     text: "Empty the bin",
@@ -25,19 +25,21 @@ export const getToDos = () =>
 export const addToDo = text =>
   new Promise(resolve => {
     setTimeout(() => {
-      resolve([
+      todos = [
         ...todos,
         {
           id: uuid(),
           text,
         },
-      ]);
+      ];
+      resolve(todos);
     }, 1500);
   });
 
 export const deleteToDo = id =>
   new Promise(resolve => {
+    todos = todos.filter(todo => todo.id !== id);
     setTimeout(() => {
-      resolve(todos.filter(todo => todo.id !== id));
+      resolve(todos);
     }, 1500);
   });
