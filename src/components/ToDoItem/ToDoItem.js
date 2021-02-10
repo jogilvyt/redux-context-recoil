@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const ToDoItem = ({ item, handleDelete }) => {
+import { removeTodo } from "../../state/actions";
+
+const ToDoItem = ({ item }) => {
   const isMounted = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     isMounted.current = true;
@@ -14,7 +18,7 @@ const ToDoItem = ({ item, handleDelete }) => {
 
   const onDelete = async () => {
     setIsLoading(true);
-    await handleDelete(item.id);
+    await dispatch(removeTodo(item.id));
     if (isMounted.current) {
       setIsLoading(false);
     }

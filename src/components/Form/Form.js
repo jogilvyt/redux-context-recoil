@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-const Form = ({ handleSubmit }) => {
+import { addNewTodo } from "../../state/actions";
+
+const Form = () => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleInputChange = e => {
     setInputValue(e.target.value);
@@ -11,7 +16,7 @@ const Form = ({ handleSubmit }) => {
   const onSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
-    await handleSubmit(inputValue);
+    await dispatch(addNewTodo(inputValue));
     setInputValue("");
     setIsLoading(false);
   };

@@ -1,33 +1,19 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getToDos, deleteToDo, addToDo } from "../../api";
+import { deleteToDo, addToDo } from "../../api";
+import { fetchToDos } from "../../state/actions";
 import Header from "../Header";
 import ToDoList from "../ToDoList";
 import Form from "../Form";
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [toDos, setToDos] = useState([]);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.isLoading);
 
   useEffect(() => {
-    const fetchToDos = async () => {
-      const res = await getToDos();
-      setToDos(res);
-      setIsLoading(false);
-    };
-
-    fetchToDos();
-  }, []);
-
-  const handleAddNew = async text => {
-    const res = await addToDo(text);
-    setToDos(res);
-  };
-
-  const handleDelete = async id => {
-    const res = await deleteToDo(id);
-    setToDos(res);
-  };
+    dispatch(fetchToDos());
+  }, [dispatch]);
 
   return (
     <div className="wrapper">
@@ -36,8 +22,8 @@ const App = () => {
       ) : (
         <>
           <Header />
-          <ToDoList toDos={toDos} handleDelete={handleDelete} />
-          <Form handleSubmit={handleAddNew} />
+          <ToDoList />
+          <Form />
         </>
       )}
     </div>
